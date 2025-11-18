@@ -225,7 +225,7 @@ class TeachingAssistant extends Person {
 // ГЛАВНЫЙ КЛАСС ДЛЯ ДЕМОНСТРАЦИИ
 public class UniversityDemo {
     public static void main(String[] args) {
-        System.out.println("🎓 УНИВЕРСИТЕТ - ДЕМОНСТРАЦИЯ ПРИНЦИПОВ ООП 🎓\n");
+        System.out.println("УНИВЕРСИТЕТ - ПРИНЦИПЫ ООП \n");
 
         // ШАГ 1: СОЗДАЕМ ОБЪЕКТЫ РАЗНЫХ КЛАССОВ
         System.out.println("=== СОЗДАНИЕ ОБЪЕКТОВ ===");
