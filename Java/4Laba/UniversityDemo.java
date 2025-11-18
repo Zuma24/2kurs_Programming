@@ -1,353 +1,298 @@
 import java.util.ArrayList;
 import java.util.List;
 
-// Абстрактный базовый класс
+// АБСТРАКТНЫЙ БАЗОВЫЙ КЛАСС - ЧЕЛОВЕК
 abstract class Person {
-    private String firstName;
-    private String lastName;
+    private String name;
     private int age;
+    private String email;
 
-    // Статический счетчик для всех объектов
-    private static int personCount = 0;
+    // СТАТИЧЕСКИЙ СЧЕТЧИК - считает всех созданных людей
+    private static int totalPeople = 0;
 
-    // Конструктор по умолчанию
+    // КОНСТРУКТОР ПО УМОЛЧАНИЮ
     public Person() {
-        this.firstName = "Неизвестно";
-        this.lastName = "Неизвестно";
+        this.name = "Неизвестно";
         this.age = 0;
-        personCount++;
+        this.email = "нет";
+        totalPeople++; // Увеличиваем счетчик при создании объекта
     }
 
-    // Конструктор с параметрами
-    public Person(String firstName, String lastName, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    // КОНСТРУКТОР С ПАРАМЕТРАМИ
+    public Person(String name, int age, String email) {
+        this.name = name;
         this.age = age;
-        personCount++;
+        this.email = email;
+        totalPeople++;
     }
 
-    // Абстрактный метод (принцип абстракции)
-    public abstract void displayRole();
+    // АБСТРАКТНЫЙ МЕТОД - каждый наследник реализует по-своему
+    public abstract void work();
 
-    // Геттеры и сеттеры
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        if (age >= 0) {
-            this.age = age;
-        }
-    }
-
-    // Статический метод для получения счетчика
-    public static int getPersonCount() {
-        return personCount;
-    }
-
-    // Общий метод для всех наследников (принцип полиморфизма)
+    // ОБЩИЙ МЕТОД ДЛЯ ВСЕХ НАСЛЕДНИКОВ
     public void introduce() {
-        System.out.println("Привет, меня зовут " + firstName + " " + lastName);
+        System.out.println("Привет! Я " + name + ", мне " + age + " лет");
+    }
+
+    // ГЕТТЕРЫ И СЕТТЕРЫ (инкапсуляция)
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getAge() { return age; }
+    public void setAge(int age) {
+        if (age >= 0) this.age = age;
+    }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    // СТАТИЧЕСКИЙ МЕТОД - работает с общим счетчиком
+    public static int getTotalPeople() {
+        return totalPeople;
     }
 
     @Override
     public String toString() {
-        return "Имя: " + firstName + " " + lastName + ", Возраст: " + age;
+        return name + " (" + age + " лет) - " + email;
     }
 }
 
-// Дочерний класс Студент
+// КЛАСС СТУДЕНТ - наследуется от Человека
 class Student extends Person {
     private String studentId;
-    private String major;
-    private double gpa;
+    private String faculty;
+    private int course;
 
     public Student() {
-        super();
+        super(); // Вызов конструктора родителя
         this.studentId = "000000";
-        this.major = "Не выбран";
-        this.gpa = 0.0;
+        this.faculty = "Не определён";
+        this.course = 1;
     }
 
-    public Student(String firstName, String lastName, int age,
-                   String studentId, String major, double gpa) {
-        super(firstName, lastName, age);
+    public Student(String name, int age, String email,
+                   String studentId, String faculty, int course) {
+        super(name, age, email); // Вызов конструктора родителя с параметрами
         this.studentId = studentId;
-        this.major = major;
-        this.gpa = gpa;
+        this.faculty = faculty;
+        this.course = course;
     }
 
-    // Реализация абстрактного метода (принцип полиморфизма)
+    // РЕАЛИЗАЦИЯ АБСТРАКТНОГО МЕТОДА - студент учится
     @Override
-    public void displayRole() {
-        System.out.println("Я студент");
+    public void work() {
+        System.out.println(getName() + " учится на " + course + " курсе факультета " + faculty);
     }
 
-    // Специфические методы для студента
-    public void study() {
-        System.out.println(getFirstName() + " " + getLastName() + " учится по специальности " + major);
-    }
-
+    // СПЕЦИФИЧЕСКИЕ МЕТОДЫ СТУДЕНТА
     public void takeExam(String subject) {
-        System.out.println("Студент " + getFirstName() + " сдает экзамен по " + subject);
+        System.out.println("Студент " + getName() + " сдает экзамен по: " + subject);
     }
 
-    // Геттеры и сеттеры
-    public String getStudentId() {
-        return studentId;
+    public void doHomework() {
+        System.out.println("Студент " + getName() + " делает домашнее задание");
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
+    // ГЕТТЕРЫ И СЕТТЕРЫ
+    public String getStudentId() { return studentId; }
+    public void setStudentId(String studentId) { this.studentId = studentId; }
 
-    public String getMajor() {
-        return major;
-    }
+    public String getFaculty() { return faculty; }
+    public void setFaculty(String faculty) { this.faculty = faculty; }
 
-    public void setMajor(String major) {
-        this.major = major;
-    }
-
-    public double getGpa() {
-        return gpa;
-    }
-
-    public void setGpa(double gpa) {
-        if (gpa >= 0.0 && gpa <= 4.0) {
-            this.gpa = gpa;
-        }
+    public int getCourse() { return course; }
+    public void setCourse(int course) {
+        if (course >= 1 && course <= 6) this.course = course;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", ID: " + studentId + ", Специальность: " + major + ", GPA: " + gpa;
+        return "СТУДЕНТ: " + super.toString() + ", ID: " + studentId +
+                ", Факультет: " + faculty + ", Курс: " + course;
     }
 }
 
-// Дочерний класс Преподаватель
+// КЛАСС ПРЕПОДАВАТЕЛЬ - наследуется от Человека
 class Teacher extends Person {
     private String department;
-    private String academicDegree;
-    private int yearsOfExperience;
+    private String subject;
+    private int experience;
 
     public Teacher() {
         super();
-        this.department = "Не определен";
-        this.academicDegree = "Не указана";
-        this.yearsOfExperience = 0;
+        this.department = "Не определён";
+        this.subject = "Не определён";
+        this.experience = 0;
     }
 
-    public Teacher(String firstName, String lastName, int age,
-                   String department, String academicDegree, int yearsOfExperience) {
-        super(firstName, lastName, age);
+    public Teacher(String name, int age, String email,
+                   String department, String subject, int experience) {
+        super(name, age, email);
         this.department = department;
-        this.academicDegree = academicDegree;
-        this.yearsOfExperience = yearsOfExperience;
+        this.subject = subject;
+        this.experience = experience;
     }
 
-    // Реализация абстрактного метода
+    // РЕАЛИЗАЦИЯ АБСТРАКТНОГО МЕТОДА - преподаватель преподает
     @Override
-    public void displayRole() {
-        System.out.println("Я преподаватель");
+    public void work() {
+        System.out.println("Преподаватель " + getName() + " преподает: " + subject);
     }
 
-    // Специфические методы для преподавателя
-    public void teach(String subject) {
-        System.out.println("Преподаватель " + getFirstName() + " преподает " + subject);
+    // СПЕЦИФИЧЕСКИЕ МЕТОДЫ ПРЕПОДАВАТЕЛЯ
+    public void conductLecture() {
+        System.out.println("Преподаватель " + getName() + " проводит лекцию");
     }
 
-    public void conductResearch() {
-        System.out.println("Преподаватель " + getFirstName() + " проводит исследование в отделе " + department);
+    public void checkPapers() {
+        System.out.println("Преподаватель " + getName() + " проверяет работы студентов");
     }
 
-    // Геттеры и сеттеры
-    public String getDepartment() {
-        return department;
-    }
+    // ГЕТТЕРЫ И СЕТТЕРЫ
+    public String getDepartment() { return department; }
+    public void setDepartment(String department) { this.department = department; }
 
-    public void setDepartment(String department) {
-        this.department = department;
-    }
+    public String getSubject() { return subject; }
+    public void setSubject(String subject) { this.subject = subject; }
 
-    public String getAcademicDegree() {
-        return academicDegree;
-    }
-
-    public void setAcademicDegree(String academicDegree) {
-        this.academicDegree = academicDegree;
-    }
-
-    public int getYearsOfExperience() {
-        return yearsOfExperience;
-    }
-
-    public void setYearsOfExperience(int yearsOfExperience) {
-        if (yearsOfExperience >= 0) {
-            this.yearsOfExperience = yearsOfExperience;
-        }
+    public int getExperience() { return experience; }
+    public void setExperience(int experience) {
+        if (experience >= 0) this.experience = experience;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", Отдел: " + department +
-                ", Ученая степень: " + academicDegree +
-                ", Опыт работы: " + yearsOfExperience + " лет";
+        return "ПРЕПОДАВАТЕЛЬ: " + super.toString() + ", Кафедра: " + department +
+                ", Предмет: " + subject + ", Опыт: " + experience + " лет";
     }
 }
 
-// Дочерний класс Ассистент преподавателя
+// КЛАСС АССИСТЕНТ - наследуется от Человека
 class TeachingAssistant extends Person {
-    private String assistingCourse;
+    private String assistedSubject;
     private int hoursPerWeek;
-    private boolean isGraduateStudent;
+    private boolean isGraduate;
 
     public TeachingAssistant() {
         super();
-        this.assistingCourse = "Не назначен";
+        this.assistedSubject = "Не определён";
         this.hoursPerWeek = 0;
-        this.isGraduateStudent = false;
+        this.isGraduate = false;
     }
 
-    public TeachingAssistant(String firstName, String lastName, int age,
-                             String assistingCourse, int hoursPerWeek, boolean isGraduateStudent) {
-        super(firstName, lastName, age);
-        this.assistingCourse = assistingCourse;
+    public TeachingAssistant(String name, int age, String email,
+                             String assistedSubject, int hoursPerWeek, boolean isGraduate) {
+        super(name, age, email);
+        this.assistedSubject = assistedSubject;
         this.hoursPerWeek = hoursPerWeek;
-        this.isGraduateStudent = isGraduateStudent;
+        this.isGraduate = isGraduate;
     }
 
-    // Реализация абстрактного метода
+    // РЕАЛИЗАЦИЯ АБСТРАКТНОГО МЕТОДА - ассистент помогает
     @Override
-    public void displayRole() {
-        System.out.println("Я ассистент преподавателя");
+    public void work() {
+        System.out.println("Ассистент " + getName() + " помогает по предмету: " + assistedSubject);
     }
 
-    // Специфические методы для ассистента
-    public void assistInLab() {
-        System.out.println("Ассистент " + getFirstName() + " помогает в лабораторной работе по курсу " + assistingCourse);
+    // СПЕЦИФИЧЕСКИЕ МЕТОДЫ АССИСТЕНТА
+    public void helpStudents() {
+        System.out.println("Ассистент " + getName() + " помогает студентам");
     }
 
-    public void gradeAssignments() {
-        System.out.println("Ассистент " + getFirstName() + " проверяет задания студентов");
+    public void prepareMaterials() {
+        System.out.println("Ассистент " + getName() + " готовит материалы для занятия");
     }
 
-    // Геттеры и сеттеры
-    public String getAssistingCourse() {
-        return assistingCourse;
-    }
+    // ГЕТТЕРЫ И СЕТТЕРЫ
+    public String getAssistedSubject() { return assistedSubject; }
+    public void setAssistedSubject(String assistedSubject) { this.assistedSubject = assistedSubject; }
 
-    public void setAssistingCourse(String assistingCourse) {
-        this.assistingCourse = assistingCourse;
-    }
-
-    public int getHoursPerWeek() {
-        return hoursPerWeek;
-    }
-
+    public int getHoursPerWeek() { return hoursPerWeek; }
     public void setHoursPerWeek(int hoursPerWeek) {
-        if (hoursPerWeek >= 0) {
-            this.hoursPerWeek = hoursPerWeek;
-        }
+        if (hoursPerWeek >= 0) this.hoursPerWeek = hoursPerWeek;
     }
 
-    public boolean isGraduateStudent() {
-        return isGraduateStudent;
-    }
-
-    public void setGraduateStudent(boolean graduateStudent) {
-        isGraduateStudent = graduateStudent;
-    }
+    public boolean isGraduate() { return isGraduate; }
+    public void setGraduate(boolean graduate) { isGraduate = graduate; }
 
     @Override
     public String toString() {
-        return super.toString() + ", Курс: " + assistingCourse +
-                ", Часов в неделю: " + hoursPerWeek +
-                ", Аспирант: " + (isGraduateStudent ? "Да" : "Нет");
+        return "АССИСТЕНТ: " + super.toString() + ", Предмет: " + assistedSubject +
+                ", Часов/неделю: " + hoursPerWeek + ", Аспирант: " + (isGraduate ? "Да" : "Нет");
     }
 }
 
-// Демонстрационный класс
+// ГЛАВНЫЙ КЛАСС ДЛЯ ДЕМОНСТРАЦИИ
 public class UniversityDemo {
     public static void main(String[] args) {
-        System.out.println("=== ДЕМОНСТРАЦИЯ ПРИНЦИПОВ ООП ===\n");
+        System.out.println("🎓 УНИВЕРСИТЕТ - ДЕМОНСТРАЦИЯ ПРИНЦИПОВ ООП 🎓\n");
 
-        // Создание объектов разных классов
-        Student student1 = new Student("Иван", "Петров", 20, "S12345", "Информатика", 3.8);
-        Student student2 = new Student("Мария", "Сидорова", 19, "S12346", "Математика", 4.0);
+        // ШАГ 1: СОЗДАЕМ ОБЪЕКТЫ РАЗНЫХ КЛАССОВ
+        System.out.println("=== СОЗДАНИЕ ОБЪЕКТОВ ===");
 
-        Teacher teacher1 = new Teacher("Алексей", "Иванов", 45,
-                "Компьютерные науки", "Доктор наук", 15);
+        Student student = new Student("Анна Иванова", 20, "anna@university.ru",
+                "S2024001", "Информатика", 2);
 
-        TeachingAssistant ta1 = new TeachingAssistant("Екатерина", "Козлова", 25,
-                "Программирование", 10, true);
+        Teacher teacher = new Teacher("Дмитрий Петров", 45, "dmitry@university.ru",
+                "Компьютерные науки", "Программирование", 15);
 
-        // Демонстрация полиморфизма
-        System.out.println("=== ПОЛИМОРФИЗМ ===");
-        List<Person> people = new ArrayList<>();
-        people.add(student1);
-        people.add(student2);
-        people.add(teacher1);
-        people.add(ta1);
+        TeachingAssistant assistant = new TeachingAssistant("Сергей Козлов", 25, "sergey@university.ru",
+                "Программирование", 12, true);
 
-        for (Person person : people) {
-            person.introduce(); // Общий метод из базового класса
-            person.displayRole(); // Абстрактный метод, реализованный по-разному
-            System.out.println();
+        // ШАГ 2: ДЕМОНСТРАЦИЯ ПОЛИМОРФИЗМА
+        System.out.println("\n=== ПОЛИМОРФИЗМ (один интерфейс - разное поведение) ===");
+
+        // Создаем список разных людей - работает с ними одинаково
+        List<Person> universityPeople = new ArrayList<>();
+        universityPeople.add(student);
+        universityPeople.add(teacher);
+        universityPeople.add(assistant);
+
+        // Один и тот же метод work() работает по-разному для каждого объекта
+        for (Person person : universityPeople) {
+            person.introduce();  // Общий метод из родительского класса
+            person.work();       // Абстрактный метод - разная реализация
+            System.out.println("---");
         }
 
-        // Демонстрация инкапсуляции через геттеры и сеттеры
-        System.out.println("=== ИНКАПСУЛЯЦИЯ ===");
-        student1.setGpa(3.9);
-        System.out.println("Новый GPA студента: " + student1.getGpa());
+        // ШАГ 3: ДЕМОНСТРАЦИЯ ИНКАПСУЛЯЦИИ
+        System.out.println("=== ИНКАПСУЛЯЦИЯ (контроль доступа к данным) ===");
 
-        teacher1.setYearsOfExperience(16);
-        System.out.println("Новый опыт преподавателя: " + teacher1.getYearsOfExperience() + " лет\n");
+        // Используем геттеры для чтения данных
+        System.out.println("Имя студента: " + student.getName());
+        System.out.println("Email преподавателя: " + teacher.getEmail());
 
-        // Демонстрация специфического поведения
-        System.out.println("=== СПЕЦИФИЧЕСКОЕ ПОВЕДЕНИЕ ===");
-        student1.study();
-        student1.takeExam("Java программирование");
+        // Используем сеттеры для изменения данных с проверкой
+        student.setAge(21);  // Корректное значение
+        student.setAge(-5);  // Некорректное значение - не изменится
+        System.out.println("Возраст студента после изменения: " + student.getAge());
+
+        // ШАГ 4: ВЫВОД ИНФОРМАЦИИ ОБ ОБЪЕКТАХ
+        System.out.println("\n=== ИНФОРМАЦИЯ О ВСЕХ ОБЪЕКТАХ ===");
+        System.out.println(student);
+        System.out.println(teacher);
+        System.out.println(assistant);
+
+        // ШАГ 5: ДЕМОНСТРАЦИЯ СПЕЦИФИЧЕСКОГО ПОВЕДЕНИЯ
+        System.out.println("\n=== СПЕЦИФИЧЕСКОЕ ПОВЕДЕНИЕ КАЖДОГО КЛАССА ===");
+
+        student.takeExam("Java программирование");
+        student.doHomework();
         System.out.println();
 
-        teacher1.teach("Объектно-ориентированное программирование");
-        teacher1.conductResearch();
+        teacher.conductLecture();
+        teacher.checkPapers();
         System.out.println();
 
-        ta1.assistInLab();
-        ta1.gradeAssignments();
-        System.out.println();
+        assistant.helpStudents();
+        assistant.prepareMaterials();
 
-        // Вывод информации о объектах
-        System.out.println("=== ИНФОРМАЦИЯ ОБ ОБЪЕКТАХ ===");
-        System.out.println("Студент 1: " + student1);
-        System.out.println("Студент 2: " + student2);
-        System.out.println("Преподаватель: " + teacher1);
-        System.out.println("Ассистент: " + ta1);
-        System.out.println();
+        // ШАГ 6: ДЕМОНСТРАЦИЯ СТАТИЧЕСКОГО СЧЕТЧИКА
+        System.out.println("\n=== СТАТИЧЕСКИЙ СЧЕТЧИК ОБЪЕКТОВ ===");
+        System.out.println("Всего создано людей в системе: " + Person.getTotalPeople());
 
-        // Демонстрация статического счетчика
-        System.out.println("=== СТАТИЧЕСКИЙ СЧЕТЧИК ===");
-        System.out.println("Всего создано объектов Person: " + Person.getPersonCount());
-
-        // Создание еще одного объекта для демонстрации счетчика
-        Student student3 = new Student();
-        System.out.println("После создания дополнительного студента: " + Person.getPersonCount());
+        // Создаем еще один объект и проверяем счетчик
+        Student newStudent = new Student();
+        System.out.println("После создания нового студента: " + Person.getTotalPeople());
     }
 }
